@@ -1,0 +1,28 @@
+<div class="container mx-auto">
+  <div class="relative flex items-center justify-between my-6">
+    <h1 class="text-2xl font-bold">Vos projets ({{boards.length}})</h1>
+    <button (click)="toggleCreateForm()" class="flex items-center justify-center w-10 h-10 text-indigo-500 rounded hover:bg-indigo-500 hover:text-indigo-100">
+      <span *ngIf="!createFormShow">+</span>
+      <span *ngIf="createFormShow" class="rotate-45">+</span>
+    </button>
+  </div>
+  <div *ngIf="createFormShow" class="absolute w-full container z-50 mx-auto flex justify-end">
+    <form [formGroup]="createForm" (ngSubmit)="createBoard()" class="bg-white shadow-md rounded p-5">
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="label">
+          Titre du tableau
+        </label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="label" type="text" formControlName="label" placeholder="Label" required minlength="4">
+      </div>
+      <div class="flex items-center justify-center">
+        <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+          Créer
+        </button>
+      </div>
+    </form>
+  </div>
+  <!--  https://codepen.io/robstinson/pen/BaLQQdX -->
+  <section class="grid grid-cols-4 gap-4">
+    <app-board *ngFor="let board of boards" [_board]="board"></app-board>
+  </section>
+</div>
