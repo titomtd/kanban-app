@@ -4,7 +4,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { Board } from "./model/board.model";
-import { BoardsService } from "./service/board/boards.service";
+import { BoardService } from "./service/board/board.service";
 import { TagService } from "./service/tag/tag.service";
 import { Tag } from "./model/tag.model";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
   formTag!: FormGroup;
 
   constructor(
-    private boardsService: BoardsService,
+    private boardService: BoardService,
     private tagsService: TagService,
     private formBuilder: FormBuilder
   ) {
@@ -61,7 +61,7 @@ export class AppComponent implements OnInit {
   }
 
   loadAllBoards(): void {
-    this.boardsService.sendGetRequest().subscribe((data: Board[])=> {
+    this.boardService.getAllBoards().subscribe((data: Board[])=> {
       this.boards = data;
     });
   }

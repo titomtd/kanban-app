@@ -5,7 +5,7 @@
   <button (click)="deleteBoard()" class="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-red-500 rounded hover:bg-red-200 hover:text-red-700 group-hover:flex p-3">
     <fa-icon [icon]="faTrashAlt"></fa-icon>
   </button>
-  <h5 *ngIf="!updateFormShow" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ _board.label }}</h5>
+  <h5 *ngIf="!updateFormShow" class="mb-2 text-md font-bold tracking-tight text-gray-900 dark:text-white">{{ _board.label }}</h5>
   <form class="w-40" *ngIf="updateFormShow" [formGroup]="updateForm" (ngSubmit)="updateBoard()">
     <input
       class="input-text"
@@ -22,8 +22,8 @@
       <div *ngIf="updateForm.get('label')?.errors?.['maxlength']">La taille maximum est de 16 caractères.</div>
     </div>
   </form>
-  <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Ce projet est composé de {{ _board.sections.length }} sections.</p>
-  <a href="#" class="text-cyan-900 hover:text-cyan-700 hover:underline flex align-centers">
+  <p class="mb-3 text-sm text-gray-700 dark:text-gray-400">Ce projet est composé de {{ _board.sections.length }} sections.</p>
+  <a href="#" class="text-sm text-cyan-900 hover:text-cyan-700 hover:underline flex align-centers">
     Voir plus
   </a>
 </article>

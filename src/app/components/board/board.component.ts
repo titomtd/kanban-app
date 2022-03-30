@@ -1,8 +1,8 @@
-import {Component, Host, Input, OnInit} from '@angular/core';
+import { Component, Host, Input, OnInit } from '@angular/core';
 import { Board } from "../../model/board.model";
-import {BoardService} from "../../service/board/board.service";
-import {HomeComponent} from "../../home/home.component";
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { BoardService } from "../../service/board/board.service";
+import { HomeComponent } from "../../home/home.component";
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
@@ -36,7 +36,7 @@ export class BoardComponent implements OnInit {
 
   updateBoard() {
     if (this.updateForm.valid) {
-      this.boardService.sendPostRequest(this._board.id, this.updateForm.value.label).subscribe(data => {
+      this.boardService.updateBoard(this._board.id, this.updateForm.value.label).subscribe(data => {
         this._board = new Board(data)
       })
       this.toggleUpdateForm()
@@ -44,7 +44,7 @@ export class BoardComponent implements OnInit {
   }
 
   deleteBoard() {
-    this.boardService.sendDeleteRequest(this._board.id).subscribe(_ => {
+    this.boardService.deleteBoard(this._board.id).subscribe(_ => {
       this.homeComponent.ngOnInit()
     })
   }

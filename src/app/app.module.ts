@@ -9,7 +9,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import { BoardComponent } from './components/board/board.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MembersComponent } from './members/members.component';
-import { MemberComponent } from './components/member/member/member.component';
+import { MemberComponent } from './components/member/member.component';
 
 @NgModule({
   declarations: [
