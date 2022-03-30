@@ -1,0 +1,84 @@
+<article class="w-full h-full bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
+  <div class="flex justify-end px-4 pt-4">
+    <button (click)="toggleDropdown()" class="hidden sm:inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
+      <fa-icon [icon]="faEllipsisV" class="px-1"></fa-icon>
+    </button>
+    <div *ngIf="dropdownShow" class="absolute mt-10 z-10 w-44 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
+      <ul class="py-1">
+        <li>
+          <button (click)="toggleModal()" class="w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Modifier</button>
+        </li>
+        <li>
+          <button (click)="deleteUser()" class="w-full text-left py-2 px-4 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Supprimer</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="flex flex-col items-center pb-10 text-center">
+    <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ _user.firstName }} {{ _user.lastName }}</h5>
+    <span *ngIf="_user.address != null" class="text-sm text-gray-500 dark:text-gray-400 px-5">{{ _user.address.street }}</span>
+    <span *ngIf="_user.address != null" class="text-sm text-gray-500 dark:text-gray-400 px-5">{{ _user.address.zipCode }}, {{ _user.address.city }}</span>
+    <span *ngIf="_user.address == null" class="text-sm text-gray-500 dark:text-gray-400 px-5">Aucune adresse pour cette utilisateur</span>
+  </div>
+</article>
+<div *ngIf="updateModalShow" class="py-12 bg-gray-100 bg-opacity-50 transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
+  <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-lg">
+    <form [formGroup]="form" (ngSubmit)="submit()" class="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400">
+      <h1 class="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4">Modifier l'utilisateur</h1>
+      <div class="input">
+        <label for="firstName" class="input-label">Prénom *</label>
+        <input
+          id="firstName"
+          formControlName="firstName"
+          type="text"
+          [ngClass]="{'input-text-error': (form.get('firstName')?.invalid && (form.get('firstName')?.dirty || form.get('firstName')?.touched))}"
+          class="input-text"
+          placeholder="Prénom"
+        />
+        <div *ngIf="form.get('firstName')?.invalid && (form.get('firstName')?.dirty || form.get('firstName')?.touched)"
+             class="text-xs text-red-600">
+          <span *ngIf="form.get('firstName')?.errors?.['required']">Ce champ est requis.</span>
+          <div *ngIf="form.get('firstName')?.errors?.['maxlength']">La taille maximum est de 20 caractères.</div>
+        </div>
+      </div>
+      <div class="input">
+        <label for="lastName" class="input-label">Nom *</label>
+        <input
+          id="lastName"
+          formControlName="lastName"
+          type="text"
+          [ngClass]="{'input-text-error': (form.get('lastName')?.invalid && (form.get('lastName')?.dirty || form.get('lastName')?.touched))}"
+          class="input-text"
+          placeholder="Nom"
+        />
+        <div *ngIf="form.get('lastName')?.invalid && (form.get('lastName')?.dirty || form.get('lastName')?.touched)"
+             class="text-xs text-red-600">
+          <span *ngIf="form.get('lastName')?.errors?.['required']">Ce champ est requis.</span>
+          <div *ngIf="form.get('lastName')?.errors?.['maxlength']">La taille maximum est de 20 caractères.</div>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500">Pour ajouter une nouvelle, veuillez compléter tous les champs ci-dessous.</p>
+      <div class="input">
+        <label for="street" class="input-label">Rue</label>
+        <input id="street" formControlName="street" type="text" class="input-text" placeholder="Nom" />
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div class="input">
+          <label for="city" class="input-label">Ville</label>
+          <input id="city" formControlName="city" type="text" class="input-text" placeholder="Rue" />
+        </div>
+        <div class="input">
+          <label for="zipCode" class="input-label">Code postal</label>
+          <input id="zipCode" formControlName="zipCode" type="number" class="input-text" placeholder="Code postal" />
+        </div>
+      </div>
+      <div class="flex items-center justify-start w-full">
+        <button [disabled]="!form.valid" type="submit" class="button button-primary">Modifier</button>
+        <button (click)="toggleModal()" class="button button-secondary ml-3">Annuler</button>
+      </div>
+      <button (click)="toggleModal()" class="cursor-pointer absolute top-0 right-0 mt-4 mr-5 text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600" aria-label="close modal" role="button">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
+    </form>
+  </div>
+</div>
