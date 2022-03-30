@@ -23,7 +23,7 @@
 </article>
 <div *ngIf="updateModalShow" class="py-12 bg-gray-100 bg-opacity-50 transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
   <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-lg">
-    <form [formGroup]="form" (ngSubmit)="submit()" class="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400">
+    <form [formGroup]="updateForm" (ngSubmit)="updateUser()" class="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400">
       <h1 class="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4">Modifier l'utilisateur</h1>
       <div class="input">
         <label for="firstName" class="input-label">Prénom *</label>
@@ -31,14 +31,14 @@
           id="firstName"
           formControlName="firstName"
           type="text"
-          [ngClass]="{'input-text-error': (form.get('firstName')?.invalid && (form.get('firstName')?.dirty || form.get('firstName')?.touched))}"
+          [ngClass]="{'input-text-error': (updateForm.get('firstName')?.invalid && (updateForm.get('firstName')?.dirty || updateForm.get('firstName')?.touched))}"
           class="input-text"
           placeholder="Prénom"
         />
-        <div *ngIf="form.get('firstName')?.invalid && (form.get('firstName')?.dirty || form.get('firstName')?.touched)"
+        <div *ngIf="updateForm.get('firstName')?.invalid && (updateForm.get('firstName')?.dirty || updateForm.get('firstName')?.touched)"
              class="text-xs text-red-600">
-          <span *ngIf="form.get('firstName')?.errors?.['required']">Ce champ est requis.</span>
-          <div *ngIf="form.get('firstName')?.errors?.['maxlength']">La taille maximum est de 20 caractères.</div>
+          <span *ngIf="updateForm.get('firstName')?.errors?.['required']">Ce champ est requis.</span>
+          <div *ngIf="updateForm.get('firstName')?.errors?.['maxlength']">La taille maximum est de 20 caractères.</div>
         </div>
       </div>
       <div class="input">
@@ -47,14 +47,14 @@
           id="lastName"
           formControlName="lastName"
           type="text"
-          [ngClass]="{'input-text-error': (form.get('lastName')?.invalid && (form.get('lastName')?.dirty || form.get('lastName')?.touched))}"
+          [ngClass]="{'input-text-error': (updateForm.get('lastName')?.invalid && (updateForm.get('lastName')?.dirty || updateForm.get('lastName')?.touched))}"
           class="input-text"
           placeholder="Nom"
         />
-        <div *ngIf="form.get('lastName')?.invalid && (form.get('lastName')?.dirty || form.get('lastName')?.touched)"
+        <div *ngIf="updateForm.get('lastName')?.invalid && (updateForm.get('lastName')?.dirty || updateForm.get('lastName')?.touched)"
              class="text-xs text-red-600">
-          <span *ngIf="form.get('lastName')?.errors?.['required']">Ce champ est requis.</span>
-          <div *ngIf="form.get('lastName')?.errors?.['maxlength']">La taille maximum est de 20 caractères.</div>
+          <span *ngIf="updateForm.get('lastName')?.errors?.['required']">Ce champ est requis.</span>
+          <div *ngIf="updateForm.get('lastName')?.errors?.['maxlength']">La taille maximum est de 20 caractères.</div>
         </div>
       </div>
       <p class="text-xs text-gray-500">Pour ajouter une nouvelle, veuillez compléter tous les champs ci-dessous.</p>
@@ -73,7 +73,7 @@
         </div>
       </div>
       <div class="flex items-center justify-start w-full">
-        <button [disabled]="!form.valid" type="submit" class="button button-primary">Modifier</button>
+        <button [disabled]="!updateForm.valid" type="submit" class="button button-primary">Modifier</button>
         <button (click)="toggleModal()" class="button button-secondary ml-3">Annuler</button>
       </div>
       <button (click)="toggleModal()" class="cursor-pointer absolute top-0 right-0 mt-4 mr-5 text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600" aria-label="close modal" role="button">

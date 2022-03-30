@@ -1,8 +1,8 @@
-import {Component, Host, Input, OnInit} from '@angular/core';
-import {User} from "../../../model/user.model";
-import {UserService} from "../../../service/user/user.service";
-import {MembersComponent} from "../../../members/members.component";
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { Component, Host, Input, OnInit } from '@angular/core';
+import { User } from "../../../model/user.model";
+import { UserService } from "../../../service/user/user.service";
+import { MembersComponent } from "../../../members/members.component";
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 
@@ -19,16 +19,16 @@ export class MemberComponent implements OnInit {
   dropdownShow: boolean = false;
 
   @Input() _user!: User;
-  form!: FormGroup;
+  updateForm!: FormGroup;
 
   constructor(
     private userService: UserService,
     @Host() private membersComponent: MembersComponent,
     private formBuilder: FormBuilder
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
+    this.updateForm = this.formBuilder.group({
       firstName: new FormControl(this._user.firstName, [Validators.required,  Validators.maxLength(20)]),
       lastName: new FormControl(this._user.lastName, [Validators.required,  Validators.maxLength(20)]),
       street: new FormControl(this._user.address ? this._user.address.street : ''),
@@ -37,47 +37,47 @@ export class MemberComponent implements OnInit {
     });
   }
 
-  deleteUser() {
-    this.userService.sendDeleteRequest(this._user.id)
+  public deleteUser(): void {
+    this.userService.deleteUser(this._user.id)
       .subscribe(
         _ => this.membersComponent.ngOnInit()
       )
   }
 
-  toggleModal() {
+  public toggleModal(): void {
     this.updateModalShow = !this.updateModalShow;
   }
 
-  submit() {
-    if (this.form.valid) {
-      this.userService.sendPostRequestUpdate(this._user.id, this.form.value).subscribe( data =>
+  public updateUser(): void {
+    if (this.updateForm.valid) {
+      this.userService.updateUser(this._user.id, this.updateForm.value).subscribe( data =>
         this.updateAddress(data)
       );
-      this.toggleModal()
+      this.toggleModal();
     }
   }
 
-  updateAddress(data: any) {
+  public updateAddress(data: any): void {
     this._user = new User(data)
-    if ('' != this.form.value.street
-      && '' != this.form.value.city
-      && '' != this.form.value.zipCode) {
+    if ('' != this.updateForm.value.street
+      && '' != this.updateForm.value.city
+      && '' != this.updateForm.value.zipCode) {
       if (null != this._user.address &&
-        (this._user.address.street != this.form.value.street
-          || this._user.address.city != this.form.value.city
-          || this._user.address.zipCode != this.form.value.zipCode)) {
-        this.userService.sendPostRequestSetAddress(this._user.id, this.form.value).subscribe(data =>
+        (this._user.address.street != this.updateForm.value.street
+          || this._user.address.city != this.updateForm.value.city
+          || this._user.address.zipCode != this.updateForm.value.zipCode)) {
+        this.userService.setAddressToUser(this._user.id, this.updateForm.value).subscribe(data =>
           this._user = new User(data)
         );
       } else {
-        this.userService.sendPostRequestSetAddress(this._user.id, this.form.value).subscribe(data =>
+        this.userService.setAddressToUser(this._user.id, this.updateForm.value).subscribe(data =>
           this._user = new User(data)
         );
       }
     }
   }
 
-  toggleDropdown(): void {
+  public toggleDropdown(): void {
     this.dropdownShow = !this.dropdownShow;
   }
 }

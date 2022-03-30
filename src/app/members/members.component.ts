@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
-import { UsersService } from "../service/user/users.service";
+import { UserService } from "../service/user/user.service";
 import { User } from "../model/user.model";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
@@ -21,19 +21,19 @@ export class MembersComponent implements OnInit {
   })
 
   constructor(
-    private usersService: UsersService,
+    private userService: UserService,
     private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
-    this.usersService.sendGetRequest().subscribe((data: User[])=> {
+    this.userService.getAllUsers().subscribe((data: User[])=> {
       this.users = data;
     })
   }
 
-  createUser() {
+  public createUser(): void {
     if (this.createForm.valid) {
-      this.usersService.sendPostRequest(this.createForm.value.firstName, this.createForm.value.lastName).subscribe(_ => {
+      this.userService.createUser(this.createForm.value.firstName, this.createForm.value.lastName).subscribe(_ => {
         this.ngOnInit()
         this.createForm.reset()
         this.toggleCreateForm()
@@ -41,7 +41,7 @@ export class MembersComponent implements OnInit {
     }
   }
 
-  toggleCreateForm() {
+  public toggleCreateForm(): void {
     this.createFromShow = !this.createFromShow;
   }
 }
