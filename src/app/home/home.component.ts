@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { BoardsService } from '../service/board/boards.service';
 import { Board } from "../model/board.model";
-import { FormBuilder } from '@angular/forms';
+import {FormBuilder, FormControl, Validators} from '@angular/forms';
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-home',
@@ -9,12 +10,13 @@ import { FormBuilder } from '@angular/forms';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  faTimes = faTimes;
 
   boards: Board[] = [];
 
   createFormShow: boolean = false;
   createForm = this.formBuilder.group({
-    label: ''
+    label: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(16)])
   })
 
   constructor(
@@ -29,11 +31,13 @@ export class HomeComponent implements OnInit {
   }
 
   createBoard() {
-    this.boardsService.sendPostRequest(this.createForm.value.label).subscribe(_ => {
-      this.ngOnInit()
-      this.createForm.reset()
-      this.toggleCreateForm()
-    })
+    if (this.createForm.valid) {
+      this.boardsService.sendPostRequest(this.createForm.value.label).subscribe(_ => {
+        this.ngOnInit()
+        this.createForm.reset()
+        this.toggleCreateForm()
+      })
+    }
   }
 
   toggleCreateForm() {
