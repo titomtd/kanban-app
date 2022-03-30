@@ -1,0 +1,31 @@
+.button {
+  @apply px-8 py-2 max-w-min w-full;
+  @apply text-sm;
+  @apply rounded;
+  @apply flex items-center;
+
+  &-primary {
+    @apply text-white;
+    @apply bg-cyan-700 hover:bg-cyan-600;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-700 transition duration-150 ease-in-out;
+  }
+
+  &-secondary {
+    @apply text-gray-600;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2  focus:ring-gray-400 ease-in-out transition duration-150;
+    @apply bg-gray-100 hover:border-gray-400 hover:bg-gray-300 border;
+  }
+
+  &-delete {
+    @apply text-white;
+    @apply bg-red-700 hover:bg-red-600;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-700 transition duration-150 ease-in-out;
+  }
+
+  &-square {
+    @apply px-3 py-2;
+    @apply text-white;
+    @apply bg-cyan-700 hover:bg-cyan-600;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-700 transition duration-150 ease-in-out;
+  }
+}

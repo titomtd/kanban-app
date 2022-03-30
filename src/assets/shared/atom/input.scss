@@ -1,0 +1,18 @@
+.input {
+  @apply mb-5;
+
+  &-text {
+    @apply my-2 w-full h-10 pl-3;
+    @apply flex items-center;
+    @apply font-normal text-gray-600 text-sm;
+    @apply focus:outline-none focus:border focus:border-indigo-700 border-gray-300 rounded border;
+
+    &-error {
+      @apply border-red-500;
+    }
+  }
+
+  &-label {
+    @apply text-gray-800 text-sm font-bold leading-tight tracking-normal;
+  }
+}
