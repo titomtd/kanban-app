@@ -1,7 +1,7 @@
 import { Component, Host, Input, OnInit } from '@angular/core';
-import { User } from "../../../model/user.model";
-import { UserService } from "../../../service/user/user.service";
-import { MembersComponent } from "../../../members/members.component";
+import { User } from "../../model/user.model";
+import { UserService } from "../../service/user/user.service";
+import { MembersComponent } from "../../members/members.component";
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
