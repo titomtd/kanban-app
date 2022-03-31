@@ -1,4 +1,4 @@
-import { Component, Host, Input, OnInit } from '@angular/core';
+import {Component, EventEmitter, Host, Input, OnInit, Output} from '@angular/core';
 import { Board } from "../../model/board.model";
 import { BoardService } from "../../service/board/board.service";
 import { HomeComponent } from "../../home/home.component";
@@ -18,6 +18,7 @@ export class BoardComponent implements OnInit {
   faArrowRight = faArrowRight;
 
   @Input() _board!: Board;
+  @Output() deleteBoardEvent = new EventEmitter<any>();
 
   updateFormShow: boolean = false;
   updateForm!: FormGroup;
@@ -38,15 +39,13 @@ export class BoardComponent implements OnInit {
     if (this.updateForm.valid) {
       this.boardService.updateBoard(this._board.id, this.updateForm.value.label).subscribe(data => {
         this._board = new Board(data)
-      })
+      });
       this.toggleUpdateForm()
     }
   }
 
   deleteBoard() {
-    this.boardService.deleteBoard(this._board.id).subscribe(_ => {
-      this.homeComponent.ngOnInit()
-    })
+    this.deleteBoardEvent.emit(this._board.id);
   }
 
   toggleUpdateForm() {

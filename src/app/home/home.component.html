@@ -5,7 +5,7 @@
   </div>
   <!--  https://codepen.io/robstinson/pen/BaLQQdX -->
   <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    <app-board *ngFor="let board of boards" [_board]="board"></app-board>
+    <app-board *ngFor="let board of boards" [_board]="board" (deleteBoardEvent)="deleteBoard($event)"></app-board>
   </section>
 </div>
 <div *ngIf="createFormShow" class="py-12 bg-gray-100 bg-opacity-50 transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">

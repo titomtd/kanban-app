@@ -1,7 +1,10 @@
+import {Card} from "./card.model";
+
 export class Section {
   private _id: undefined;
   private _label: undefined;
-  private _position: undefined;
+  private _position: any;
+  private _cards: Card[] = [];
 
   constructor(obj: any) {
     Object.assign(this, obj);
@@ -23,11 +26,21 @@ export class Section {
     this._label = value;
   }
 
-  get position(): undefined {
+  get position(): any {
     return this._position;
   }
 
-  set position(value: undefined) {
+  set position(value: any) {
     this._position = value;
+  }
+
+  get cards(): Card[] {
+    return this._cards;
+  }
+
+  set cards(value: Card[]) {
+    value?.forEach((item) => {
+      this._cards.push(new Card(item))
+    });
   }
 }

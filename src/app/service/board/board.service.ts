@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Board} from "../../model/board.model";
-import {map} from "rxjs";
+import { HttpClient } from "@angular/common/http";
+import { Board } from "../../model/board.model";
+import { map, Observable } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -13,14 +13,21 @@ export class BoardService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public getAllBoards(){
+  public getAllBoards(): Observable<Board[]> {
     const returnList: Board[] = [];
-    return this.httpClient.get<Board[]>(this.REST_API_BOARDS).pipe(
-      map(function (list: Board[]): Board[] {
-        list.forEach(item => returnList.push(new Board(item)))
-        return returnList;
-      })
-    );
+    return this.httpClient
+      .get<Board[]>(this.REST_API_BOARDS)
+      .pipe(
+         map(function (list: Board[]): Board[] {
+          list.forEach(item => returnList.push(new Board(item)))
+          return returnList;
+        })
+      )
+    ;
+  }
+
+  public getBoard(id: any) {
+    return this.httpClient.get<Board>(this.REST_API_BOARD + id);
   }
 
   public createBoard(label: string) {
@@ -33,5 +40,9 @@ export class BoardService {
 
   public updateBoard(id: undefined, label: undefined) {
     return this.httpClient.post(this.REST_API_BOARD + id, {'label' : label});
+  }
+
+  public addNewSection(id: any, body: any) {
+    return this.httpClient.patch<Board>(this.REST_API_BOARD + id + "/section", body);
   }
 }

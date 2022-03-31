@@ -23,7 +23,7 @@
     </div>
   </form>
   <p class="mb-3 text-sm text-gray-700 dark:text-gray-400">Ce projet est composé de {{ _board.sections.length }} sections.</p>
-  <a href="#" class="text-sm text-cyan-900 hover:text-cyan-700 hover:underline flex align-centers">
+  <a [routerLink]="['/board/'+_board.id]" class="text-sm text-cyan-900 hover:text-cyan-700 hover:underline flex align-centers">
     Voir plus
   </a>
 </article>

@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { BoardService } from '../service/board/board.service';
 import { Board } from "../model/board.model";
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
@@ -15,32 +15,40 @@ export class HomeComponent implements OnInit {
   boards: Board[] = [];
 
   createFormShow: boolean = false;
-  createForm = this.formBuilder.group({
-    label: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(16)])
-  })
+  createForm!: FormGroup;
 
   constructor(
     private boardService: BoardService,
     private formBuilder: FormBuilder
-  ) { }
-
-  ngOnInit(): void {
-    this.boardService.getAllBoards().subscribe((data: Board[])=> {
-      this.boards = data;
-    })
+  ) {
+    this.createForm = this.formBuilder.group({
+      label: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(16)])
+    });
   }
 
-  createBoard() {
+  ngOnInit(): void {
+    this.loadAllBoards();
+  }
+
+  public createBoard(): void {
     if (this.createForm.valid) {
       this.boardService.createBoard(this.createForm.value.label).subscribe(_ => {
-        this.ngOnInit()
-        this.createForm.reset()
-        this.toggleCreateForm()
-      })
+        this.loadAllBoards();
+        this.createForm.reset();
+        this.toggleCreateForm();
+      });
     }
   }
 
-  toggleCreateForm() {
+  public toggleCreateForm(): void {
     this.createFormShow = !this.createFormShow
+  }
+
+  public loadAllBoards(): void {
+    this.boardService.getAllBoards().subscribe(data => this.boards = data);
+  }
+
+  public deleteBoard($event: any): void {
+    this.boardService.deleteBoard($event).subscribe(_ => this.loadAllBoards());
   }
 }
