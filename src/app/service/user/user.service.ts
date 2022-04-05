@@ -23,8 +23,8 @@ export class UserService {
     );
   }
 
-  public createUser(firstName: undefined, lastName: undefined) {
-    return this.httpClient.post(this.REST_API_USERS, {'firstName' : firstName, 'lastName' : lastName});
+  public createUser(body: any) {
+    return this.httpClient.post<User>(this.REST_API_USERS, body);
   }
 
   public deleteUser(id: any) {
@@ -32,10 +32,6 @@ export class UserService {
   }
 
   public updateUser(id: any, body: any) {
-     return this.httpClient.post(this.REST_API_USER + id, {'firstName' : body.firstName, 'lastName' : body.lastName});
-  }
-
-  public setAddressToUser(id: any, body: any) {
-    return this.httpClient.patch(this.REST_API_USER + id + '/address', {'street' : body.street, 'city' : body.city, 'zipCode' : body.zipCode});
+     return this.httpClient.post<User>(this.REST_API_USER + id, body);
   }
 }

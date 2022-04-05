@@ -1,4 +1,4 @@
-import { Component, Host, Input, OnInit } from '@angular/core';
+import {Component, EventEmitter, Host, Input, OnInit, Output} from '@angular/core';
 import { User } from "../../model/user.model";
 import { UserService } from "../../service/user/user.service";
 import { MembersComponent } from "../../members/members.component";
@@ -19,7 +19,10 @@ export class MemberComponent implements OnInit {
   dropdownShow: boolean = false;
 
   @Input() _user!: User;
+  @Output() deleteUserEvent = new EventEmitter<User>();
+
   updateForm!: FormGroup;
+  addressForm!: FormGroup;
 
   constructor(
     private userService: UserService,
@@ -28,20 +31,17 @@ export class MemberComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.updateForm = this.formBuilder.group({
-      firstName: new FormControl(this._user.firstName, [Validators.required,  Validators.maxLength(20)]),
-      lastName: new FormControl(this._user.lastName, [Validators.required,  Validators.maxLength(20)]),
+    this.addressForm = this.formBuilder.group({
       street: new FormControl(this._user.address ? this._user.address.street : ''),
       city: new FormControl(this._user.address ? this._user.address.city : ''),
       zipCode: new FormControl(this._user.address ? this._user.address.zipCode : '')
     });
-  }
 
-  public deleteUser(): void {
-    this.userService.deleteUser(this._user.id)
-      .subscribe(
-        _ => this.membersComponent.ngOnInit()
-      )
+    this.updateForm = this.formBuilder.group({
+      firstName: new FormControl(this._user.firstName, [Validators.required,  Validators.maxLength(20)]),
+      lastName: new FormControl(this._user.lastName, [Validators.required,  Validators.maxLength(20)]),
+      address: this.addressForm
+    });
   }
 
   public toggleModal(): void {
@@ -50,34 +50,20 @@ export class MemberComponent implements OnInit {
 
   public updateUser(): void {
     if (this.updateForm.valid) {
-      this.userService.updateUser(this._user.id, this.updateForm.value).subscribe( data =>
-        this.updateAddress(data)
-      );
+      console.log(this.updateForm.value)
+      this.userService
+        .updateUser(this._user.id, this.updateForm.value)
+        .subscribe( data => this._user = data)
+      ;
       this.toggleModal();
-    }
-  }
-
-  public updateAddress(data: any): void {
-    this._user = new User(data)
-    if ('' != this.updateForm.value.street
-      && '' != this.updateForm.value.city
-      && '' != this.updateForm.value.zipCode) {
-      if (null != this._user.address &&
-        (this._user.address.street != this.updateForm.value.street
-          || this._user.address.city != this.updateForm.value.city
-          || this._user.address.zipCode != this.updateForm.value.zipCode)) {
-        this.userService.setAddressToUser(this._user.id, this.updateForm.value).subscribe(data =>
-          this._user = new User(data)
-        );
-      } else {
-        this.userService.setAddressToUser(this._user.id, this.updateForm.value).subscribe(data =>
-          this._user = new User(data)
-        );
-      }
     }
   }
 
   public toggleDropdown(): void {
     this.dropdownShow = !this.dropdownShow;
+  }
+
+  public deleteUser(): void {
+    this.deleteUserEvent.emit(this._user);
   }
 }

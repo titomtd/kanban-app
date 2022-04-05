@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, Validators} from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { UserService } from "../service/user/user.service";
 import { User } from "../model/user.model";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -15,33 +15,53 @@ export class MembersComponent implements OnInit {
   users: User[] = [];
 
   createFromShow: boolean = false;
-  createForm = this.formBuilder.group({
-    firstName: new FormControl('', [Validators.required, Validators.maxLength(20)]),
-    lastName: new FormControl('', [Validators.required, Validators.maxLength(20)])
-  })
+  formCreateUser!: FormGroup;
 
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder
-  ) { }
-
-  ngOnInit(): void {
-    this.userService.getAllUsers().subscribe((data: User[])=> {
-      this.users = data;
-    })
+  ) {
+    this.formCreateUser = this.formBuilder.group({
+      firstName: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+      lastName: new FormControl('', [Validators.required, Validators.maxLength(20)])
+    });
   }
 
-  public createUser(): void {
-    if (this.createForm.valid) {
-      this.userService.createUser(this.createForm.value.firstName, this.createForm.value.lastName).subscribe(_ => {
-        this.ngOnInit()
-        this.createForm.reset()
-        this.toggleCreateForm()
-      })
+  ngOnInit(): void {
+    this.userService
+      .getAllUsers()
+      .subscribe(
+        (data: User[])=> {
+          this.users = data;
+        }
+      )
+    ;
+  }
+
+  public submitCreateUser(): void {
+    if (this.formCreateUser.valid) {
+      this.userService
+        .createUser(this.formCreateUser.value)
+        .subscribe(data => this.users.push(data))
+      ;
+      this.formCreateUser.reset();
+      this.toggleCreateForm();
     }
   }
 
   public toggleCreateForm(): void {
     this.createFromShow = !this.createFromShow;
+  }
+
+  public deleteUser($event: User): void {
+    this.userService
+      .deleteUser($event.id)
+      .subscribe(
+        _ => {
+          let index = this.users.findIndex(user => user.id === $event.id);
+          this.users.splice(index, 1);
+        }
+      )
+    ;
   }
 }
