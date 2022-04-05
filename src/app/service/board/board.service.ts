@@ -30,16 +30,16 @@ export class BoardService {
     return this.httpClient.get<Board>(this.REST_API_BOARD + id);
   }
 
-  public createBoard(label: string) {
-    return this.httpClient.post<any>(this.REST_API_BOARDS, {'label' : label});
+  public createBoard(body: any) {
+    return this.httpClient.post<Board>(this.REST_API_BOARDS, body);
   }
 
   public deleteBoard(id: undefined) {
     return this.httpClient.delete(this.REST_API_BOARD + id);
   }
 
-  public updateBoard(id: undefined, label: undefined) {
-    return this.httpClient.post(this.REST_API_BOARD + id, {'label' : label});
+  public updateBoard(id: any, body: any) {
+    return this.httpClient.post<Board>(this.REST_API_BOARD + id, body);
   }
 
   public addNewSection(id: any, body: any) {

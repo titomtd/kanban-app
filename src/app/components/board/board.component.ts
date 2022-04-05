@@ -1,7 +1,6 @@
-import {Component, EventEmitter, Host, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Board } from "../../model/board.model";
 import { BoardService } from "../../service/board/board.service";
-import { HomeComponent } from "../../home/home.component";
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -18,37 +17,37 @@ export class BoardComponent implements OnInit {
   faArrowRight = faArrowRight;
 
   @Input() _board!: Board;
-  @Output() deleteBoardEvent = new EventEmitter<any>();
+  @Output() deleteBoardEvent = new EventEmitter<Board>();
 
   updateFormShow: boolean = false;
   updateForm!: FormGroup;
 
   constructor(
     private boardService: BoardService,
-    private formBuilder: FormBuilder,
-    @Host() private homeComponent: HomeComponent
-  ) {}
+    private formBuilder: FormBuilder
+  ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.updateForm = this.formBuilder.group({
       label: new FormControl(this._board.label, [Validators.required, Validators.minLength(3), Validators.maxLength(16)])
-    })
+    });
   }
 
-  updateBoard() {
+  public updateBoard(): void {
     if (this.updateForm.valid) {
-      this.boardService.updateBoard(this._board.id, this.updateForm.value.label).subscribe(data => {
-        this._board = new Board(data)
-      });
-      this.toggleUpdateForm()
+      this.boardService
+        .updateBoard(this._board.id, this.updateForm.value)
+        .subscribe(data => this._board = data)
+      ;
+      this.toggleUpdateForm();
     }
   }
 
-  deleteBoard() {
+  public deleteBoard(): void {
     this.deleteBoardEvent.emit(this._board.id);
   }
 
-  toggleUpdateForm() {
+  public toggleUpdateForm(): void {
     this.updateFormShow = !this.updateFormShow;
   }
 }

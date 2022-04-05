@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BoardService } from '../service/board/board.service';
 import { Board } from "../model/board.model";
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -32,11 +32,12 @@ export class HomeComponent implements OnInit {
 
   public createBoard(): void {
     if (this.createForm.valid) {
-      this.boardService.createBoard(this.createForm.value.label).subscribe(_ => {
-        this.loadAllBoards();
-        this.createForm.reset();
-        this.toggleCreateForm();
-      });
+      this.boardService
+        .createBoard(this.createForm.value)
+        .subscribe(data => this.boards.push(data))
+      ;
+      this.createForm.reset();
+      this.toggleCreateForm();
     }
   }
 
@@ -45,10 +46,21 @@ export class HomeComponent implements OnInit {
   }
 
   public loadAllBoards(): void {
-    this.boardService.getAllBoards().subscribe(data => this.boards = data);
+    this.boardService
+      .getAllBoards()
+      .subscribe(data => this.boards = data)
+    ;
   }
 
-  public deleteBoard($event: any): void {
-    this.boardService.deleteBoard($event).subscribe(_ => this.loadAllBoards());
+  public deleteBoard($event: Board): void {
+    this.boardService
+      .deleteBoard($event.id)
+      .subscribe(
+        _ => {
+          let index = this.boards.findIndex(board => board.id === $event.id);
+          this.boards.splice(index, 1);
+        }
+      )
+    ;
   }
 }

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Host, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Host, Input, OnInit, Output } from '@angular/core';
 import { User } from "../../model/user.model";
 import { UserService } from "../../service/user/user.service";
 import { MembersComponent } from "../../members/members.component";
@@ -50,7 +50,6 @@ export class MemberComponent implements OnInit {
 
   public updateUser(): void {
     if (this.updateForm.valid) {
-      console.log(this.updateForm.value)
       this.userService
         .updateUser(this._user.id, this.updateForm.value)
         .subscribe( data => this._user = data)

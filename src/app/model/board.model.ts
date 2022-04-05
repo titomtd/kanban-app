@@ -1,27 +1,27 @@
 import {Section} from "./section.model";
 
 export class Board {
-  private _id: undefined;
-  private _label: undefined;
+  private _id: any;
+  private _label: any;
   private _sections: Section[] = [];
 
   constructor(obj: any) {
     Object.assign(this, obj);
   }
 
-  get id(): undefined {
+  get id(): any {
     return this._id;
   }
 
-  set id(value: undefined) {
+  set id(value: any) {
     this._id = value;
   }
 
-  get label(): undefined {
+  get label(): any {
     return this._label;
   }
 
-  set label(value: undefined) {
+  set label(value: any) {
     this._label = value;
   }
 
