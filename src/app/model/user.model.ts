@@ -1,4 +1,4 @@
-import {Address} from "./address.model";
+import { Address } from "./address.model";
 
 export class User {
   private _id: any;
@@ -39,8 +39,6 @@ export class User {
   }
 
   set address(value: any) {
-    if (value != null) {
-      this._address = new Address(value);
-    }
+    this._address = value;
   }
 }

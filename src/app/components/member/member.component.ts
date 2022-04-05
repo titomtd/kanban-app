@@ -55,6 +55,7 @@ export class MemberComponent implements OnInit {
         .subscribe( data => this._user = data)
       ;
       this.toggleModal();
+      this.toggleDropdown();
     }
   }
 
