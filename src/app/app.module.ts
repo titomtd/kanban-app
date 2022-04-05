@@ -13,6 +13,8 @@ import { MemberComponent } from './components/member/member.component';
 import { BoardDetailComponent } from './board-detail/board-detail.component';
 import { SectionComponent } from './components/section/section.component';
 import { MenuComponent } from './components/menu/menu.component';
+import { CardComponent } from './components/card/card.component';
+import {DragDropModule} from "@angular/cdk/drag-drop";
 
 @NgModule({
   declarations: [
@@ -23,14 +25,16 @@ import { MenuComponent } from './components/menu/menu.component';
     MemberComponent,
     BoardDetailComponent,
     SectionComponent,
-    MenuComponent
+    MenuComponent,
+    CardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]
