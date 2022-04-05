@@ -15,7 +15,6 @@ import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
-
   faClipboardList = faClipboardList;
   faPlus = faPlus;
   faTimes = faTimes;
@@ -38,36 +37,44 @@ export class MenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadAllBoards();
-    this.loadAllTags();
+    this.tagsService
+      .getAllTags()
+      .subscribe(
+        data => {
+          this.tags = data;
+        }
+      )
+    ;
+
+    this.boardService
+      .getAllBoards()
+      .subscribe(data => this.boards = data)
+    ;
   }
 
-  submitFormTag(): void {
+  public submitFormTag(): void {
     if (this.formTag.valid) {
-      this.tagsService.createTag(this.formTag.value).subscribe(_ => {
-        this.loadAllTags();
-        this.toggleTagModal();
-      })
+      this.tagsService
+        .createTag(this.formTag.value)
+        .subscribe(data => this.tags.push(data))
+      ;
+      this.toggleTagModal();
     }
   }
 
-  deleteTag(id: any): void {
-    this.tagsService.deleteTag(id).subscribe(_ => {
-      this.loadAllTags();
-    });
+  public deleteTag(id: any): void {
+    this.tagsService
+      .deleteTag(id)
+      .subscribe(
+        _ => {
+          let index = this.tags.findIndex(tag => tag.id === id);
+          this.tags.splice(index, 1);
+        }
+      )
+    ;
   }
 
-  toggleTagModal(): void {
+  public toggleTagModal(): void {
     this.showTagModal = !this.showTagModal;
-  }
-
-  loadAllBoards(): void {
-    this.boardService.getAllBoards().subscribe(data => this.boards = data);
-  }
-
-  loadAllTags(): void {
-    this.tagsService.getAllTags().subscribe((data: Tag[])=> {
-      this.tags = data;
-    });
   }
 }

@@ -24,7 +24,7 @@ export class TagService {
   }
 
   public createTag(body: any) {
-    return this.httpClient.post<any>(this.REST_API_TAGS, body);
+    return this.httpClient.post<Tag>(this.REST_API_TAGS, body);
   }
 
   public deleteTag(id: any) {
