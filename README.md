@@ -1,27 +1,11 @@
-# KanbanApp
+# Kanban App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.0.
+Voici l'application pour l'api du Kanban développée sous Spring Boot.
 
-## Development server
+La page d'accueil affiche tous les tableaux créés tout en offrant la possibilité d'en créer des nouveaux. Sur cette même page, il y a un menu à gauche qui permet d'accéder à l'onglet des différents utilisateurs et de gérer les différents tags présents dans l'application.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+La page des utilisateurs utilise le même fonctionnement que la page d'accueil. On y découvre tous les utilisateurs de l'application. On peut en créer, les modifier ou les supprimer.
 
-## Code scaffolding
+Via la page d'accueil, si on clique sur "Voir plus" via la carte d'un tableau, on accède aux détails d'un tableau avec les différents sections et leurs fiches associées. On peut créer une nouvelle section, les modifier ou les supprimer. Ensuiite, dans l'entente d'une section, on peut créer une carte qui sera ajouté dans la section selectionnée. Une fois ajoutée, la fiche est affichée, on peut la modifier ou la supprimer.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Important : Je n'ai pas trouvé le temps pour ajouter la possibilité à une fiche de changer de section. Cette fonctionnalité possède déjà une route côté API associée, mais le fait de vouloir l'implémenter via un drag and drop a fait que le temps m'avait manqué.
