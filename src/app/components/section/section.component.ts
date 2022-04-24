@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Host, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Section } from "../../model/section.model";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -6,7 +6,8 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { SectionService } from "../../service/section/section.service";
-import {BoardDetailComponent} from "../../board-detail/board-detail.component";
+import { Card } from "../../model/card.model";
+import { CardService } from "../../service/card/card.service";
 
 @Component({
   selector: 'app-section',
@@ -20,7 +21,8 @@ export class SectionComponent implements OnInit {
   faPencilAlt = faPencilAlt;
 
   @Input() _section!: Section;
-  @Output() deleteSectionEvent = new EventEmitter<any>();
+  @Output() deleteSectionEvent = new EventEmitter<Section>();
+  @Output() updateSectionPosition = new EventEmitter();
 
   showFormCreateCard: boolean = false;
   formCreateCard!: FormGroup;
@@ -30,8 +32,8 @@ export class SectionComponent implements OnInit {
 
   constructor(
     private sectionService: SectionService,
-    private formBuilder: FormBuilder,
-    @Host() private boardDetailComponent: BoardDetailComponent
+    private cardService: CardService,
+    private formBuilder: FormBuilder
   ) {
     this.formCreateCard = this.formBuilder.group({
       label: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(16)]),
@@ -49,7 +51,7 @@ export class SectionComponent implements OnInit {
     });
   }
 
-  submitCreateCard(): void {
+  public submitCreateCard(): void {
     if (this.formCreateCard.valid) {
       this.sectionService
         .addNewCard(this._section.id, this.formCreateCard.value)
@@ -59,28 +61,40 @@ export class SectionComponent implements OnInit {
     }
   }
 
-  toggleFormCreateCard(): void {
+  public toggleFormCreateCard(): void {
     this.showFormCreateCard = !this.showFormCreateCard;
   }
 
   public deleteSection(): void {
-    this.deleteSectionEvent.emit(this._section.id);
+    this.deleteSectionEvent.emit(this._section);
   }
 
-  toggleFormUpdateSection(): void {
+  public toggleFormUpdateSection(): void {
     this.showFormUpdateSection = !this.showFormUpdateSection;
   }
 
-  submitUpdateSection(): void {
+  public submitUpdateSection(): void {
     if (this.formUpdateSection.valid) {
       this.sectionService
         .updateSection(this._section.id, this.formUpdateSection.value)
         .subscribe(data => {
-          this._section = data
+          this._section = data;
+          this.updateSectionPosition.emit();
         })
       ;
-      this.boardDetailComponent.loadBoard();
       this.toggleFormUpdateSection();
     }
+  }
+
+  public deleteCard($event: Card): void {
+    this.cardService
+      .deleteCard($event.id)
+      .subscribe(
+        _ => {
+          let index = this._section.cards.findIndex(card => card.id === $event.id);
+          this._section.cards.splice(index, 1);
+        }
+      )
+    ;
   }
 }

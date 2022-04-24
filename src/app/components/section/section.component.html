@@ -1,14 +1,14 @@
-<article class="w-72 m-3">
+<article class="w-72 m-3 h-full">
   <div class="flex items-center justify-between bg-gray-100 rounded p-3 group">
-    <h5 class="font-medium text-md items-center">{{ _section.label }}<span class=" ml-2 text-xs text-gray-500">{{_section.position}}</span></h5>
+    <h5 class="font-medium text-md items-center">{{ _section.label }}<span class=" ml-2 text-xs text-gray-500">{{_section.cards.length}}</span></h5>
     <div class="flex items-center">
       <button  (click)="toggleFormUpdateSection()" class="mr-2"><fa-icon [icon]="faPencilAlt" class="text-xs text-cyan-700 hover:text-cyan-900 hidden group-hover:flex"></fa-icon></button>
       <button  (click)="deleteSection()" class="mr-2"><fa-icon [icon]="faTrashAlt" class="text-xs text-red-500 hover:text-red-700 hidden group-hover:flex"></fa-icon></button>
       <button (click)="toggleFormCreateCard()"><fa-icon [icon]="faPlus" class="text-cyan-700"></fa-icon></button>
     </div>
   </div>
-  <div class="flex flex-col overflow-y-scroll">
-    <app-card *ngFor="let card of _section.cards" [_card]="card"></app-card>
+  <div class="flex flex-col overflow-y-auto h-screen">
+    <app-card *ngFor="let card of _section.cards" [_card]="card" (deleteCardEvent)="deleteCard($event)"></app-card>
   </div>
 </article>
 <div *ngIf="showFormCreateCard" class="py-12 bg-gray-100 bg-opacity-50 transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0">
@@ -101,6 +101,7 @@
           class="input-text"
           [ngClass]="{'input-text-error': (formUpdateSection.get('position')?.invalid && (formUpdateSection.get('position')?.dirty || formUpdateSection.get('position')?.touched))}"
           type="number"
+          id="position"
           formControlName="position"
           placeholder="Position"
         />
