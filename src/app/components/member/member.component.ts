@@ -42,6 +42,9 @@ export class MemberComponent implements OnInit {
       lastName: new FormControl(this._user.lastName, [Validators.required,  Validators.maxLength(20)]),
       address: this.addressForm
     });
+    console.log(this._user.address.street)
+    console.log(this._user.address.city)
+    console.log(this._user.address.zipCode)
   }
 
   public toggleModal(): void {
