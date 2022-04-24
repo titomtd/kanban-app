@@ -44,7 +44,7 @@ export class BoardComponent implements OnInit {
   }
 
   public deleteBoard(): void {
-    this.deleteBoardEvent.emit(this._board.id);
+    this.deleteBoardEvent.emit(this._board);
   }
 
   public toggleUpdateForm(): void {
