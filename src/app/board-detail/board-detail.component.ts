@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
-import {Board} from "../model/board.model";
-import {BoardService} from "../service/board/board.service";
+import { Board } from "../model/board.model";
+import { BoardService } from "../service/board/board.service";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Section } from "../model/section.model";
-import {SectionService} from "../service/section/section.service";
+import { SectionService } from "../service/section/section.service";
 
 @Component({
   selector: 'app-board-detail',
@@ -15,8 +15,7 @@ import {SectionService} from "../service/section/section.service";
 export class BoardDetailComponent implements OnInit {
   faTimes = faTimes;
 
-  board!: Board;
-  sections: Section[] = [];
+  _board!: Board;
 
   formNewSectionShow: boolean = false;
   formNewSection!: FormGroup;
@@ -30,7 +29,7 @@ export class BoardDetailComponent implements OnInit {
     this.formNewSection = this.formBuilder.group({
       label: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(16)]),
       position: new FormControl('', [Validators.required])
-    })
+    });
   }
 
   ngOnInit(): void {
@@ -38,33 +37,41 @@ export class BoardDetailComponent implements OnInit {
   }
 
   public loadBoard(): void {
-    this.activatedRoute.paramMap.subscribe(params => {
-      this.boardService.getBoard(params.get('boardId')).subscribe(
-        item => {
-          this.board = item;
-          this.sections = this.board.sections.sort( (a, b) => a.position - b.position);
+    this.activatedRoute
+      .paramMap
+      .subscribe(
+        params => {
+          this.boardService
+            .getBoard(params.get('boardId'))
+            .subscribe(item => this._board = item)
+          ;
         }
-      );
-    });
+      )
+    ;
   }
 
-  createNewSection() {
+  public createNewSection(): void {
     if (this.formNewSection.valid) {
-      this.boardService.addNewSection(this.board.id, this.formNewSection.value).subscribe(
-        item => {
-          this.board = item;
-          this.sections = this.board.sections.sort( (a, b) => a.position - b.position);
-          this.toggleFormNewSection();
-        }
-      );
+      this.boardService
+        .addNewSection(this._board.id, this.formNewSection.value)
+        .subscribe(item => this._board = item)
+      ;
+      this.toggleFormNewSection();
     }
   }
 
-  toggleFormNewSection(): void {
+  public toggleFormNewSection(): void {
     this.formNewSectionShow = !this.formNewSectionShow;
   }
 
-  public deleteSection($event: any): void {
-    this.sectionService.deleteSection($event).subscribe(_ => this.loadBoard());
+  public deleteSection($event: Section): void {
+    this.sectionService
+      .deleteSection($event.id)
+      .subscribe(_ => this.loadBoard())
+    ;
+  }
+
+  public updateSectionPosition(): void {
+    this.loadBoard();
   }
 }
